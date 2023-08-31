@@ -4,7 +4,6 @@
       pull_request:
         types:
           - closed
-          - labeled
         branches:
           - v1.13
     jobs:
@@ -12,7 +11,7 @@
         if: |
             github.event.pull_request.merged == true &&
             contains(github.event.pull_request.title, 'Backports') &&
-            github.event.label.name == 'backport/v1.13'
+            contains(github.event.pull_request.labels.*.name, 'backport/v1.13')
         uses: pippolo84/gh-action-label-test/.github/workflows/update-label-backport-pr.yaml@main
         with:
           pr-body: ${{ github.event.pull_request.body }}
