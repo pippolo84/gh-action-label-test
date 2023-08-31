@@ -1,0 +1,20 @@
+---
+    name: Call Backport Label Updater
+    on:
+      pull_request:
+        types:
+          - closed
+          - labeled
+        branches:
+          - v1.14
+    jobs:
+      call-backport-label-updater:
+        if: |
+            github.event.pull_request.merged == true &&
+            contains(github.event.pull_request.title, 'Backports') &&
+            github.event.label.name == 'backport/v1.14'
+        uses: pippolo84/gh-action-label-test/.github/workflows/update-label-backport-pr.yaml@main
+        with:
+          pr-body: ${{ github.event.pull_request.body }}
+          branch: 1.14
+        secrets: inherit
