@@ -27,8 +27,8 @@
                 GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             run: |
                 echo "${{ inputs.pr-body }}" | grep -Eo '\* \[[x, ]\] #[0-9]+ \(@' | grep -Eo '[0-9]+' | while read -r pr; do
-                    echo "Removing label backport-pending/"${{ inputs.branch }}" from pr #${pr}."
-                    gh pr edit ${pr} --repo "${GITHUB_REPOSITORY}" --remove-label backport-pending/"${{ inputs.branch }}"
-                    echo "Adding label backport-done/"${{ inputs.branch }}" to pr #${pr}."
-                    gh pr edit ${pr} --repo "${GITHUB_REPOSITORY}" --add-label backport-pending/"${{ inputs.branch }}"
-                fi
+                  echo "Removing label backport-pending/"${{ inputs.branch }}" from pr #${pr}."
+                  gh pr edit ${pr} --repo "${GITHUB_REPOSITORY}" --remove-label backport-pending/"${{ inputs.branch }}"
+                  echo "Adding label backport-done/"${{ inputs.branch }}" to pr #${pr}."
+                  gh pr edit ${pr} --repo "${GITHUB_REPOSITORY}" --add-label backport-pending/"${{ inputs.branch }}"
+                done || true
