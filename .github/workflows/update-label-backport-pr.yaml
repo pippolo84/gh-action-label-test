@@ -26,4 +26,4 @@
             env:
               GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             run: |
-              echo "${{ inputs.pr-body }}"
+              echo '${{ inputs.pr-body }}'
