@@ -10,7 +10,7 @@
       call-backport-label-updater:
         if: |
             github.event.pull_request.merged == true &&
-            contains(github.event.pull_request.title, 'Backports') &&
+            contains(github.event.pull_request.body, 'upstream-prs') &&
             contains(github.event.pull_request.labels.*.name, 'backport/1.12')
         uses: pippolo84/gh-action-label-test/.github/workflows/update-label-backport-pr.yaml@main
         with:
