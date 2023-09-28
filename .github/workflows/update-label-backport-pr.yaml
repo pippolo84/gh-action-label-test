@@ -31,4 +31,4 @@
                 gh pr edit ${pr} --repo "${GITHUB_REPOSITORY}" --remove-label backport-pending/"${{ inputs.branch }}"
                 echo "Adding label backport-done/${{ inputs.branch }} to pr #${pr}."
                 gh pr edit ${pr} --repo "${GITHUB_REPOSITORY}" --add-label backport-done/"${{ inputs.branch }}"
-              done || true
+              done
