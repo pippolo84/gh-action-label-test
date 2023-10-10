@@ -26,6 +26,8 @@
             env:
               GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             run: |
+              bash --version
+              sed --version
               echo '${{ inputs.pr-body }}' | sed -En "/upstream-prs/ { n; p }" | cut -d ';' -f 1 | grep -Eo '[0-9]+' | while read -r pr; do
                 echo "Removing label backport-pending/${{ inputs.branch }} from pr #${pr}."
                 gh pr edit ${pr} --repo "${GITHUB_REPOSITORY}" --remove-label backport-pending/"${{ inputs.branch }}"
