@@ -26,7 +26,8 @@
             env:
               GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             run: |
-              echo '${{ toJSON(inputs.pr-body) }}' | sed -En "/upstream-prs/ { n; p }" | cut -d ';' -f 1 | grep -Eo '[0-9]+' | while read -r pr; do
+              body="${{ inputs.pr-body }}"
+              echo "${body//[\'\"]/}" | sed -En "/upstream-prs/ { n; p }" | cut -d ';' -f 1 | grep -Eo '[0-9]+' | while read -r pr; do
                 echo "Removing label backport-pending/${{ inputs.branch }} from pr #${pr}."
                 gh pr edit ${pr} --repo "${GITHUB_REPOSITORY}" --remove-label backport-pending/"${{ inputs.branch }}"
                 echo "Adding label backport-done/${{ inputs.branch }} to pr #${pr}."
