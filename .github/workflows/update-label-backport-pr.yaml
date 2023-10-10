@@ -17,6 +17,20 @@
             description: "The stable branch version."
 
     jobs:
+      echo:
+        runs-on: ubuntu-latest
+        steps:
+          - uses: actions/github-script@v6.4.1
+            id: pre-process
+            env:
+              body: ${{ inputs.pr-body }}
+            with:
+              script: |
+                const { body } = process.env
+                return body.replace(/\'/g, '')
+                  .replace(/"/g, '')
+              result-encoding: string
+          - run: echo "${{steps.pre-process.outputs.result}}"
       backport-label-updater:
         runs-on: ubuntu-latest
         permissions:
