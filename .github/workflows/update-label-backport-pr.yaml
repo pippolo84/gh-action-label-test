@@ -18,17 +18,16 @@
 
     jobs:
       backport-label-updater:
-        name: Update labels in backported PRs
+        name: Update labels of backported PRs
         runs-on: ubuntu-latest
         permissions:
           pull-requests: write # Adding and removing labels
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           body: ${{ inputs.pr-body }}
         steps:
           - name: Pre-process PR body
             id: pre-process
-            uses: actions/github-script@v6.4.1
+            uses: actions/github-script@d7906e4ad0b1822421a7e6a35d5ca353c962f410 #v6.4.1
             with:
               script: |
                 const { body } = process.env
@@ -37,7 +36,6 @@
                   .replace(/`/g, '')
                   .replace(/$/g, '')
               result-encoding: string
-          - run: echo "${{steps.pre-process.outputs.result}}"
 
           - name: Update labels
             env:
