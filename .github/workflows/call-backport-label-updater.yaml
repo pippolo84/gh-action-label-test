@@ -18,14 +18,12 @@
       if: |
         github.event.pull_request.merged == true &&
         contains(github.event.pull_request.body, 'upstream-prs') &&
-        contains(github.event.pull_request.labels.*.name, 'backport/')
+        contains(join(github.event.pull_request.labels.*.name, ', '), 'backport/')
       steps:
-        - name: Get Stable Branch
+        - name: Get Branch
           id: get-branch
           run: |
-            echo ",${{ github.event.pull_request.labels.*.name }},"
             if echo ",${{ github.event.pull_request.labels.*.name }}," | grep -q ",backport/${{ matrix.branch }},"; then
-              echo "version=${{ matrix.branch }} ok"
               echo "version=${{ matrix.branch }}" >> "$GITHUB_OUTPUT"
             fi
 
@@ -36,3 +34,4 @@
       with:
         pr-body: ${{ github.event.pull_request.body }}
         branch: ${{needs.get-branch.outputs.version}}
+      secrets: inherit
