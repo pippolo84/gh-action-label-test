@@ -23,8 +23,11 @@
         - name: Get Branch
           id: get-branch
           run: |
-            if echo ",${{ github.event.pull_request.labels.*.name }}," | grep -q ",backport/${{ matrix.branch }},"; then
-              echo "version=${{ matrix.branch }}" >> "$GITHUB_OUTPUT"
+            jq -c '[.[].name]' ${{ toJson(github.event.pull_request.labels) }} | while read label; do
+              if [ ${label} = "backport/${{ matrix.branch }}" ]; then
+                echo "version=${{ matrix.branch }}" >> "$GITHUB_OUTPUT"
+                break
+              fi
             fi
 
     call-backport-label-updater:
